@@ -20,7 +20,16 @@ const LogView: React.FC = () => {
                         ${log.alert ? 'bg-red-500/10 border-red-500/20' : 'bg-white/5 hover:bg-white/10 transition-colors'}
                     `}>
                             <div className="flex items-center space-x-4">
-                                <div className={`w-2 h-2 rounded-full ${log.alert ? 'bg-red-500 animate-pulse' : 'bg-white/20'}`} />
+                                <img
+                                    src={
+                                        log.type === 'DISARMED' ? '/Disarm deactive.svg' :
+                                            log.type === 'ARMED AWAY' ? '/Arm deactive.svg' :
+                                                log.type === 'ARMED HOME' ? '/home Arm deactive.svg' :
+                                                    '/Active log.svg'
+                                    }
+                                    alt={log.type}
+                                    className={`w-6 h-6 object-contain opacity-80 ${log.alert ? 'animate-pulse' : ''}`}
+                                />
                                 <div className="flex flex-col">
                                     <span className={`text-sm font-medium tracking-wide ${log.alert ? 'text-red-400' : 'text-white/80'}`}>
                                         {log.type}

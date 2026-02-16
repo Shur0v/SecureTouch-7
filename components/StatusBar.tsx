@@ -12,8 +12,8 @@ const StatusBar: React.FC<StatusBarProps> = ({ currentMode }) => {
       {/* Top Left: Mini clock & Status Icon */}
       <div className="flex items-center space-x-4">
         <div className="text-white/40 text-sm font-light tracking-widest flex items-center">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
-            SECURE SYSTEM ACTIVE
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+          SECURE SYSTEM ACTIVE
         </div>
       </div>
 
@@ -43,9 +43,15 @@ const StatusBar: React.FC<StatusBarProps> = ({ currentMode }) => {
             <div className="h-full w-4/5 bg-emerald-500/60 rounded-[1px]"></div>
             <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-0.5 h-1 bg-white/20 rounded-r-sm"></div>
           </div>
-          <svg className="w-3 h-3 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
-             <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-          </svg>
+          <img
+            src={
+              currentMode === SystemMode.ARMED_AWAY ? "/Active Arm.svg" :
+                currentMode === SystemMode.ARMED_HOME ? "/Active Home Arm.svg" :
+                  "/Active Disarm.svg"
+            }
+            className="w-4 h-4 opacity-90"
+            alt="Status"
+          />
         </div>
       </div>
     </div>
