@@ -28,7 +28,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ currentMode, onModeChange
             key={btn.id}
             onClick={() => onModeChange(btn.id)}
             className={`
-              relative flex flex-col items-center justify-center rounded-[32px] transition-all duration-300 group overflow-hidden
+              relative flex flex-col items-center justify-center rounded-[32px] transition-all duration-300 group/btn overflow-hidden
               ${btn.special === 'sos' ? 'bg-red-500/10 border-red-500/20 hover:bg-red-500/20 active:scale-95' : ''}
               ${!btn.special && !isActive ? 'bg-white/[0.03] border-white/5 hover:bg-white/[0.07] active:scale-95' : ''}
               ${isActive && !btn.special ? 'bg-white/10 border-white/20' : 'border'}
@@ -40,7 +40,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ currentMode, onModeChange
             )}
 
             <div className={`
-                mb-3 transition-transform duration-300 group-active:scale-90
+                mb-3 transition-transform duration-300 group-active/btn:scale-90
                 ${isActive ? 'text-white' : 'text-white/30'}
                 ${btn.special === 'sos' ? 'text-red-400' : ''}
             `}>
@@ -57,7 +57,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ currentMode, onModeChange
 
             {/* Tap feedback ring */}
             <div className={`
-                absolute inset-2 border rounded-[24px] opacity-0 group-active:opacity-100 transition-opacity pointer-events-none
+                absolute inset-2 border rounded-[24px] opacity-0 group-active/btn:opacity-100 transition-opacity pointer-events-none
                 ${btn.special === 'sos' ? 'border-red-500/50' : 'border-white/20'}
             `} />
           </button>
@@ -98,7 +98,7 @@ const DisarmIcon = ({ active }: { active: boolean }) => (
   <img
     src={active ? "/Active Disarm.svg" : "/Disarm deactive.svg"}
     alt="Disarm"
-    className="w-10 h-10" // Increased size slightly as images might have padding
+    className={`w-10 h-10 transition-opacity duration-300 ${active ? 'opacity-100' : 'opacity-60'}`}
   />
 );
 
@@ -106,7 +106,7 @@ const HomeArmIcon = ({ active }: { active: boolean }) => (
   <img
     src={active ? "/Active Home Arm.svg" : "/home Arm deactive.svg"}
     alt="Home Arm"
-    className="w-10 h-10"
+    className={`w-10 h-10 transition-opacity duration-300 ${active ? 'opacity-100' : 'opacity-60'}`}
   />
 );
 
@@ -114,7 +114,7 @@ const ArmIcon = ({ active }: { active: boolean }) => (
   <img
     src={active ? "/Active Arm.svg" : "/Arm deactive.svg"}
     alt="Arm Away"
-    className="w-10 h-10"
+    className={`w-10 h-10 transition-opacity duration-300 ${active ? 'opacity-100' : 'opacity-60'}`}
   />
 );
 

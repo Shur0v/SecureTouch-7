@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { SystemMode } from './types';
 import StatusBar from './components/StatusBar';
 import ModeIndicator from './components/ModeIndicator';
@@ -8,12 +8,15 @@ import ActionButtons from './components/ActionButtons';
 import SecurityPad from './components/SecurityPad';
 import LogView from './components/LogView';
 import SettingsView from './components/SettingsView';
+import AmbientBackground, { InteractionHandler } from './components/AmbientBackground';
 
 const App: React.FC = () => {
   const [currentMode, setCurrentMode] = useState<SystemMode>(SystemMode.DISARMED);
   const [prevMode, setPrevMode] = useState<SystemMode>(SystemMode.DISARMED);
   const [showPad, setShowPad] = useState(false);
   const [pendingMode, setPendingMode] = useState<SystemMode | null>(null);
+
+  const interactionRef = useRef<InteractionHandler | null>(null);
 
   // Simulation of time update
   const [time, setTime] = useState(new Date());
@@ -22,6 +25,12 @@ const App: React.FC = () => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  const handleGlobalClick = (e: React.MouseEvent) => {
+    if (interactionRef.current) {
+      interactionRef.current(e.clientX, e.clientY);
+    }
+  };
 
   const handleModeChange = (newMode: SystemMode) => {
     // If we are disarming or going to settings, require code
@@ -63,7 +72,11 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="w-[1024px] h-[600px] bg-[#0A0A0A] text-white relative flex flex-col overflow-hidden shadow-2xl border border-white/5 rounded-lg select-none">
+    <div
+      onClick={handleGlobalClick}
+      className="w-[1024px] h-[600px] bg-transparent text-white relative flex flex-col overflow-hidden shadow-2xl border border-white/5 rounded-lg select-none"
+    >
+      <AmbientBackground onRef={(handler) => (interactionRef.current = handler)} />
 
       <SecurityPad
         isOpen={showPad}
@@ -76,7 +89,7 @@ const App: React.FC = () => {
       <StatusBar currentMode={currentMode} />
 
       {/* Main Dashboard Layout */}
-      <div className="flex-1 px-12 pt-4 pb-8 flex flex-col transition-all duration-500">
+      <div className="flex-1 px-12 pt-4 pb-8 flex flex-col transition-all duration-500 z-10">
 
         <div className="flex justify-between items-start mb-auto">
           {/* 1️⃣ & 2️⃣ Time, Date & Weather Module */}
@@ -116,14 +129,6 @@ const App: React.FC = () => {
           </button>
         </div>
       )}
-
-      {/* Decorative ambient background blur */}
-      <div className={`absolute top-0 right-0 w-[400px] h-[400px] blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none transition-colors duration-1000 
-          ${currentMode === SystemMode.ARMED_AWAY ? 'bg-rose-500/10' :
-          currentMode === SystemMode.ARMED_HOME ? 'bg-amber-500/10' :
-            'bg-emerald-500/5'}`
-      } />
-      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-500/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
     </div>
   );
 };
