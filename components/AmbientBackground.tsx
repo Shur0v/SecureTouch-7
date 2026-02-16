@@ -20,35 +20,56 @@ const AmbientBackground: React.FC<AmbientBackgroundProps> = ({ onRef }) => {
         const timeline = gsap.timeline({ repeat: -1, yoyo: true });
 
         if (blob1Ref.current && blob2Ref.current && blob3Ref.current) {
-            // Blob 1: Dark Blue/Charcoal - slow drift
+            // Blob 1 (Top Left): Deep Blue -> Deep Violet
             gsap.to(blob1Ref.current, {
-                x: "20%",
-                y: "-15%",
-                duration: 20,
+                x: "30%",
+                y: "-20%",
+                duration: 12,
                 ease: "sine.inOut",
                 repeat: -1,
                 yoyo: true
             });
+            gsap.to(blob1Ref.current, {
+                backgroundColor: "#2e1065", // violet-950 (Deep Purple)
+                duration: 6,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
 
-            // Blob 2: Soft Graphite - counter drift
+            // Blob 2 (Bottom Right): Deep Green -> Deep Slate
             gsap.to(blob2Ref.current, {
-                x: "-15%",
-                y: "20%",
-                duration: 25,
+                x: "-25%",
+                y: "25%",
+                duration: 14,
                 ease: "sine.inOut",
                 repeat: -1,
                 yoyo: true,
-                delay: 2
+                delay: 1
+            });
+            gsap.to(blob2Ref.current, {
+                backgroundColor: "#0f172a", // slate-900
+                duration: 7,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
             });
 
-            // Blob 3: Deep Midnight - slight rotation/scale
+            // Blob 3 (Center): Deep Indigo -> Deep Blue
             gsap.to(blob3Ref.current, {
-                scale: 1.2,
-                opacity: 0.15,
-                duration: 15,
+                scale: 1.4,
+                opacity: 0.2,
+                duration: 8,
                 ease: "sine.inOut",
                 repeat: -1,
                 yoyo: true
+            });
+            gsap.to(blob3Ref.current, {
+                backgroundColor: "#172554", // blue-950
+                duration: 8,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
             });
         }
 
@@ -56,9 +77,7 @@ const AmbientBackground: React.FC<AmbientBackgroundProps> = ({ onRef }) => {
         onRef((x, y) => {
             if (!rippleRef.current || !containerRef.current) return;
 
-            // Get relative coordinates within the container if needed, 
-            // but for full screen overlay, clientX/Y is fine relative to viewport usually.
-            // Assuming container is relative/absolute filling parent.
+            // Get relative coordinates within the container if needed
             const rect = containerRef.current.getBoundingClientRect();
             const relativeX = x - rect.left;
             const relativeY = y - rect.top;
@@ -92,15 +111,18 @@ const AmbientBackground: React.FC<AmbientBackgroundProps> = ({ onRef }) => {
             {/* Ambient Blobs */}
             <div
                 ref={blob1Ref}
-                className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px]"
+                className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] rounded-full blur-[180px] opacity-40"
+                style={{ backgroundColor: "#172554" }} // blue-950 (Deep Blue)
             />
             <div
                 ref={blob2Ref}
-                className="absolute bottom-[-20%] right-[-10%] w-[700px] h-[700px] bg-slate-800/10 rounded-full blur-[120px]"
+                className="absolute bottom-[-30%] right-[-10%] w-[900px] h-[900px] rounded-full blur-[180px] opacity-40"
+                style={{ backgroundColor: "#022c22" }} // emerald-950 (Deep Green)
             />
             <div
                 ref={blob3Ref}
-                className="absolute top-[30%] left-[20%] w-[500px] h-[500px] bg-indigo-950/10 rounded-full blur-[100px] opacity-20"
+                className="absolute top-[30%] left-[20%] w-[600px] h-[600px] rounded-full blur-[140px] opacity-20"
+                style={{ backgroundColor: "#312e81" }} // indigo-900
             />
 
             {/* Interaction Ripple Layer */}
